@@ -14,6 +14,7 @@ public class Main extends Application {
         primaryStage.setTitle("Shape Dragging");
         primaryStage.setScene(new Scene(root, 1000, 800));
         primaryStage.show();
+        
     }
 
 
