@@ -29,16 +29,28 @@ public class Controller {
     
     double xPressed;
     double yPressed;
-    double startPathPaneX;
-    double startPathPaneY;
+    
+//    Circle clickedCircle;
+//    double xCircleStart;
+//    double yCircleStart;
+	double orgSceneX, orgSceneY;
+	double orgTranslateX, orgTranslateY;
+
     
     Set<AnchorPane> windows = new HashSet<AnchorPane>();
 
     @FXML
     public void initialize(){
-    	windows.add(miniMenu);
-    	windows.add(addNodeMenu);
-    	//this.createCircle(50,50);
+    	try
+	    {
+		    windows.add(miniMenu);
+		    windows.add(addNodeMenu);
+		    this.createCircle(50, 50);
+	    }
+	    catch (IOException e)
+	    {
+	    	e.printStackTrace();
+	    }
     }
 
     public void  createCircle(double x, double y) throws IOException{
@@ -51,30 +63,20 @@ public class Controller {
         circle.setCenterY(y);
         circle.setRadius(5.0);
         circle.setStyle("-fx-fill: hotpink");
-        circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent event)
-	        {
-	        	if (!miniMenuExists)
-					miniMenuAppear();
-	        	else
-		        {
-			        miniMenu.setLayoutX(x);
-			        miniMenu.setLayoutY(y);
-		        }
-	        }
-        });
+        
+        //MouseEvent Handler calls
+        circle.setOnMousePressed(circleOnMousePress);
+		circle.setOnMouseDragged(circleOnMouseDrag);
 
         MotherPane.getChildren().add(circle);
     }
 
+    /*
     // occurs at the start of the drag (when the mouse is pressed)
     public void mouseClicked(MouseEvent mouseEvent) throws IOException {
 
         xPressed = mouseEvent.getSceneX();
         yPressed = mouseEvent.getSceneY();
-        startPathPaneX = MotherPane.getLayoutX();
-        startPathPaneY = MotherPane.getLayoutY();
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && !addNodeMenuExists) {
             if (mouseEvent.getSource().equals(MotherPane) && !mouseEvent.getSource().equals(miniMenu)) {
                 closeAll();
@@ -90,6 +92,7 @@ public class Controller {
             }
         }
     }
+    */
     
     public void addNodeMenuAppear(double xCoord,double yCoord) throws IOException{
     	AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
@@ -164,20 +167,48 @@ public class Controller {
 	{
 		createCircle(mouseEvent.getSceneX(),mouseEvent.getSceneY());
 	}
-
-    // occurs everytime mouse is moved while clicked (dragging)
-    public void mapDragged(MouseEvent mouseEvent) {
-        double currX = mouseEvent.getSceneX();
-        double currY = mouseEvent.getSceneY();
-
-        double vectorX = (currX - xPressed);
-        double vectorY = (currY - yPressed);
-
-        MotherPane.setLayoutX(startPathPaneX + vectorX);
-        MotherPane.setLayoutY(startPathPaneY + vectorY);
-
-        System.out.println("dragging: x: " + vectorX + ", y: " + vectorY);
-    }
 	
+	//Circle Event Handlers
+	
+	EventHandler<MouseEvent> circleOnMousePress = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event)
+		{
+//			xPressed = event.getSceneX();
+//			yPressed = event.getSceneY();
+//			clickedCircle = (Circle) event.getSource();
+//			xCircleStart = clickedCircle.getTranslateX();
+//			yCircleStart = clickedCircle.getCenterY();
+			orgSceneX = event.getSceneX();
+			orgSceneY = event.getSceneY();
+			orgTranslateX = ((Circle)(event.getSource())).getTranslateX();
+			orgTranslateY = ((Circle)(event.getSource())).getTranslateY();
+		}
+	};
+	
+	
+	EventHandler<MouseEvent> circleOnMouseDrag = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event)
+		{
+			double offsetX = event.getSceneX() - orgSceneX;
+			double offsetY = event.getSceneY() - orgSceneY;
+			double newTranslateX = orgTranslateX + offsetX;
+			double newTranslateY = orgTranslateY + offsetY;
+			
+			((Circle)(event.getSource())).setTranslateX(newTranslateX);
+			((Circle)(event.getSource())).setTranslateY(newTranslateY);
+			
+//			double xDragged = event.getSceneX() - xPressed;
+//			double yDragged = event.getSceneY() - yPressed;
+//
+//			double xNewCircle = xCircleStart + xDragged;
+//			double yNewCircle = yCircleStart + yDragged;
+//
+//			clickedCircle.setLayoutX(yCircleStart + 50);
+//			clickedCircle.setTranslateY(event.getSceneY() + yPressed);
 
+		}
+	};
+	
 }
