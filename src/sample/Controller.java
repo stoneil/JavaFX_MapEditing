@@ -89,7 +89,7 @@ public class Controller
 		}
 		else //if the addNodeMenu doesn't exist
 		{
-			AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
+//			AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
 //			newAddNodeMenu.setLayoutX(xCoord);
 //			newAddNodeMenu.setLayoutY(yCoord);
 			AddNodeController addNodeController = new AddNodeController(this, xCoord, yCoord);
