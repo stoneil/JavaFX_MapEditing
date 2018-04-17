@@ -53,7 +53,7 @@ public class Controller
 //			windows.add(addNodeMenu);
 			this.createCircle(50, 50);
 //			Circle newCircle;
-			backgroundPane.addEventFilter(MouseEvent.MOUSE_CLICKED, backgroundFilter);
+//			backgroundPane.addEventFilter(MouseEvent.MOUSE_CLICKED, backgroundFilter);
 		}
 		catch (Exception e)
 		{
@@ -204,31 +204,6 @@ public class Controller
 		}
 	};
 	
-	EventHandler backgroundFilter = new EventHandler()
-	{
-		@Override
-		public void handle(Event event)
-		{
-			if (event.getTarget().equals(addNodeMenu) || event.getTarget().equals(miniMenu))
-			{
-				System.out.println("background shouldn't take it if the other popups are targeted too");
-				event.consume();
-			}
-		}
-	};
-	
-	EventHandler multiWindowFilter = new EventHandler() {
-		@Override
-		public void handle(Event event)
-		{
-			if (event.getTarget().equals(miniMenu))
-			{
-				System.out.println("Add Node shouldn't take it if the the miniMenu is targeted too");
-				event.consume();
-			}
-		}
-	};
-	
 	EventHandler<MouseEvent> circleOnMouseLeftClick = new EventHandler<MouseEvent>()
 	{
 		@Override
@@ -238,6 +213,7 @@ public class Controller
 			{
 				System.out.println("left click");
 				miniMenuAppear(event.getSceneX(), event.getSceneY());
+				event.consume();
 			}
 		}
 	};
@@ -261,7 +237,7 @@ public class Controller
 				closeAll();
 			}
 			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
-				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY()); //TODO: make sure that this stops happening when you right click on a circle 
+				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY()); //TODO: make sure that this stops happening when you right click on a circle
 		}
 		catch (IOException e)
 		{
