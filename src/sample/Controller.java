@@ -53,7 +53,7 @@ public class Controller
 //			windows.add(addNodeMenu);
 			this.createCircle(50, 50);
 //			Circle newCircle;
-			backgroundPane.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, backgroundFilter);
+			backgroundPane.addEventFilter(MouseEvent.MOUSE_CLICKED, backgroundFilter);
 		}
 		catch (Exception e)
 		{
@@ -76,7 +76,7 @@ public class Controller
 		//MouseEvent Handler calls
 		circle.setOnMousePressed(circleOnMousePress);
 		circle.setOnMouseDragged(circleOnMouseDrag);
-		circle.setOnMouseClicked(circleOnMouseRightClick);
+		circle.setOnMouseClicked(circleOnMouseLeftClick);
 		circle.setOnMouseDragReleased(circleOnMouseDragRelease);
 		System.out.println("parentPane: " + backgroundPane);
 		backgroundPane.getChildren().add(circle);
@@ -89,7 +89,7 @@ public class Controller
 		if (backgroundPane.getChildren().contains(miniMenu))
 		{
 			backgroundPane.getChildren().remove(miniMenu);
-			miniMenu.toBack();
+//			miniMenu.toBack();
 		}
 		if (!backgroundPane.getChildren().contains(addNodeMenu))
 			backgroundPane.getChildren().add(addNodeMenu);
@@ -116,6 +116,7 @@ public class Controller
 			
 			miniMenu.setLayoutX(x);
 			miniMenu.setLayoutY(y);
+			miniMenu.toFront();
 		}
 		catch (Exception e)
 		{
@@ -228,14 +229,14 @@ public class Controller
 		}
 	};
 	
-	EventHandler<MouseEvent> circleOnMouseRightClick = new EventHandler<MouseEvent>()
+	EventHandler<MouseEvent> circleOnMouseLeftClick = new EventHandler<MouseEvent>()
 	{
 		@Override
 		public void handle(MouseEvent event)
 		{
-			if (event.getButton().equals(MouseButton.SECONDARY))
+			if (event.getButton().equals(MouseButton.PRIMARY))
 			{
-				System.out.println("right click");
+				System.out.println("left click");
 				miniMenuAppear(event.getSceneX(), event.getSceneY());
 			}
 		}
@@ -255,12 +256,12 @@ public class Controller
 		System.out.println("background click");
 		try
 		{
-			if (mouseEvent.getButton().equals(MouseButton.PRIMARY))
+			if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && !mouseEvent.getSource().equals(miniMenu))
 			{
 				closeAll();
 			}
 			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
-				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY()); //TODO: make sure that this stops happening when you right click on a circle 
 		}
 		catch (IOException e)
 		{
