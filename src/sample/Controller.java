@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
@@ -25,7 +26,6 @@ public class Controller
 	public AnchorPane miniMenu, backgroundPane, MotherPane, addNodeMenu;
 	@FXML
 	public Label editAttributes, addEdge, deleteNode, setAsKiosk, addNode;
-
 	
 	
 	boolean miniMenuExists = false;
@@ -42,7 +42,7 @@ public class Controller
 	
 	
 	Set<AnchorPane> windows = new HashSet<AnchorPane>();
-	Circle newCircle;
+	Circle editingCircle;
 	
 	@FXML
 	public void initialize()
@@ -53,6 +53,7 @@ public class Controller
 //			windows.add(addNodeMenu);
 			this.createCircle(50, 50);
 //			Circle newCircle;
+			backgroundPane.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, backgroundFilter);
 		}
 		catch (Exception e)
 		{
@@ -79,13 +80,17 @@ public class Controller
 		circle.setOnMouseDragReleased(circleOnMouseDragRelease);
 		System.out.println("parentPane: " + backgroundPane);
 		backgroundPane.getChildren().add(circle);
-		newCircle = circle;
 	}
 	
 	
 	public void addNodeMenuAppear(double xCoord, double yCoord) throws IOException
 	{
 		//Should only run the first time
+		if (backgroundPane.getChildren().contains(miniMenu))
+		{
+			backgroundPane.getChildren().remove(miniMenu);
+			miniMenu.toBack();
+		}
 		if (!backgroundPane.getChildren().contains(addNodeMenu))
 			backgroundPane.getChildren().add(addNodeMenu);
 		
@@ -101,6 +106,11 @@ public class Controller
 		System.out.println("mini menu");
 		try
 		{
+			if (backgroundPane.getChildren().contains(addNodeMenu))
+			{
+				backgroundPane.getChildren().remove(addNodeMenu);
+				addNodeMenu.toBack();
+			}
 			if (!backgroundPane.getChildren().contains(miniMenu))
 				backgroundPane.getChildren().add(miniMenu);
 			
@@ -124,6 +134,9 @@ public class Controller
         */
 		System.out.println("closing all windows");
 		MotherPane.getChildren().removeAll(windows);
+		backgroundPane.getChildren().remove(addNodeMenu);
+		backgroundPane.getChildren().remove(miniMenu);
+		
 		miniMenuExists = false;
 		addNodeMenuExists = false;
 	}
@@ -143,6 +156,7 @@ public class Controller
 	public void deleteNode(MouseEvent mouseEvent)
 	{
 		System.out.println("deleteNode clicked");
+		backgroundPane.getChildren().remove(((Circle) (mouseEvent.getSource())));
 	}
 	
 	public void addNodeClicked(MouseEvent mouseEvent) throws IOException
@@ -150,6 +164,10 @@ public class Controller
 		createCircle(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 	}
 	
+	public void setKioskTrigger(MouseEvent mouseEvent)
+	{
+		System.out.println("Setting Kiosk");
+	}
 	//Circle Event Handlers
 	
 	EventHandler<MouseEvent> circleOnMousePress = new EventHandler<MouseEvent>()
@@ -182,16 +200,31 @@ public class Controller
 			
 			((Circle) (event.getSource())).setTranslateX(newTranslateX);
 			((Circle) (event.getSource())).setTranslateY(newTranslateY);
-
-//			double xDragged = event.getSceneX() - xPressed;
-//			double yDragged = event.getSceneY() - yPressed;
-//
-//			double xNewCircle = xCircleStart + xDragged;
-//			double yNewCircle = yCircleStart + yDragged;
-//
-//			clickedCircle.setLayoutX(yCircleStart + 50);
-//			clickedCircle.setTranslateY(event.getSceneY() + yPressed);
-		
+		}
+	};
+	
+	EventHandler backgroundFilter = new EventHandler()
+	{
+		@Override
+		public void handle(Event event)
+		{
+			if (event.getTarget().equals(addNodeMenu) || event.getTarget().equals(miniMenu))
+			{
+				System.out.println("background shouldn't take it if the other popups are targeted too");
+				event.consume();
+			}
+		}
+	};
+	
+	EventHandler multiWindowFilter = new EventHandler() {
+		@Override
+		public void handle(Event event)
+		{
+			if (event.getTarget().equals(miniMenu))
+			{
+				System.out.println("Add Node shouldn't take it if the the miniMenu is targeted too");
+				event.consume();
+			}
 		}
 	};
 	
@@ -225,7 +258,6 @@ public class Controller
 			if (mouseEvent.getButton().equals(MouseButton.PRIMARY))
 			{
 				closeAll();
-				backgroundPane.getChildren().remove(addNodeMenu);
 			}
 			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
 				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY());
@@ -235,5 +267,7 @@ public class Controller
 			e.printStackTrace();
 		}
 	}
+	
+
 }
 
