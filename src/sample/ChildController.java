@@ -6,23 +6,21 @@ import javafx.scene.layout.Pane;
 
 abstract public class ChildController
 {
-	private Controller parentController;
-	private double xCoord, yCoord;
-	AnchorPane basePane;
+	public Controller parentController;
+	public double xCoord, yCoord;
 	
-	public ChildController(Controller parentController, double xCoord, double yCoord)
+	public ChildController()
 	{
-		this.parentController = parentController;
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
-		setupFXML();
-		basePane.setLayoutX(xCoord);
-		basePane.setLayoutY(yCoord);
-		this.parentController.MotherPane.getChildren().add(this.basePane);
+//		setupFXML();
+//		System.out.println("basepane : " + this.basePane);
+//		setXY(xCoord,yCoord);
+//		this.parentController.MotherPane.getChildren().add(this.basePane);
 	}
+	
+//	abstract public void setXY(double x, double y);
 	
 	void setParentController(Controller parentController) {this.parentController = parentController;}
 	
-	abstract void setupFXML();
+//	abstract void setupFXML();
 }
 

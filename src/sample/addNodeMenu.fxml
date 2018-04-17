@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="addNodeMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.89" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0067b1 #0067b1; -fx-background-radius: 10px;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane fx:id="addNodeMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.89" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0067b1 #0067b1; -fx-background-radius: 10px;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddNodeController">
 	<children>
 		<Label fx:id="addNode" accessibleRole="BUTTON" layoutX="4.0" layoutY="2.0" onMouseClicked="#addNodeClicked" prefHeight="26.0" prefWidth="124.0" text="Add Node" textFill="WHITE">
 			<font>

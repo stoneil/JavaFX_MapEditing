@@ -84,18 +84,30 @@ public class Controller
 	{
 		if (childrenControllers.containsKey("addNodeMenu"))
 		{
-			childrenControllers.get("addNodeMenu").basePane.setLayoutX(xCoord);
-			childrenControllers.get("addNodeMenu").basePane.setLayoutY(yCoord);
+//			childrenControllers.get("addNodeMenu").setXY(xCoord,yCoord);
+		
+
 		}
 		else //if the addNodeMenu doesn't exist
 		{
-//			AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
-//			newAddNodeMenu.setLayoutX(xCoord);
-//			newAddNodeMenu.setLayoutY(yCoord);
-			AddNodeController addNodeController = new AddNodeController(this, xCoord, yCoord);
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource("newAddNode.fxml"));
+//			System.out.println("loader: " + loader);
+			AnchorPane newAddNodeMenu = (AnchorPane) FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
+			System.out.println("add node anchor pane: " + newAddNodeMenu);
+			
+			//Sets newAddNodeMenu pane x and y within constructor
+			AddNodeController addNodeController = new AddNodeController();
+			addNodeController.setParentController(this);
+			System.out.println("parent: " + addNodeController.parentController);
+			addNodeController.setXY(xCoord,yCoord);
+			newAddNodeMenu.setLayoutX(xCoord);
+			newAddNodeMenu.setLayoutY(yCoord);
+			
+			
+			this.MotherPane.getChildren().add(newAddNodeMenu);
 			
 			//Adds the Anchor Pane to child from within the child controller
-			childrenControllers.put(addNodeController.basePane.getId(),addNodeController);
+			//childrenControllers.put(addNodeController.getBasepane().getId(),addNodeController);
 			
 			//addNodeMenuExists = true;
 		}
