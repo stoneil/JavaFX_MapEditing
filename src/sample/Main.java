@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -16,11 +17,10 @@ public class Main extends Application {
 //        loader.setController(new Controller());
         Parent root = loader.load();
         System.out.println("parent: " + root);
-        System.out.println("");
         primaryStage.setTitle("Shape Dragging");
-        primaryStage.setScene(new Scene(root, 1000, 800));
-        primaryStage.show();
         
+	    primaryStage.setScene(new Scene(root, 1000, 800));
+        primaryStage.show();
     }
 
 

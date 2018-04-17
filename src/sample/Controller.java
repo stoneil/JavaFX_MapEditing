@@ -22,11 +22,10 @@ public class Controller
 {
 	
 	@FXML
-	public AnchorPane miniMenu,backgroundPane,MotherPane,addNodeMenu;
+	public AnchorPane miniMenu, backgroundPane, MotherPane, addNodeMenu;
 	@FXML
 	public Label editAttributes, addEdge, deleteNode, setAsKiosk, addNode;
-	public AnchorPane addNodeMenuDiff;
-	public AnchorPane miniMenuDiff;
+
 	
 	
 	boolean miniMenuExists = false;
@@ -50,9 +49,9 @@ public class Controller
 	{
 		try
 		{
-			windows.add(miniMenu);
-			windows.add(addNodeMenu);
-		    this.createCircle(50, 50);
+//			windows.add(miniMenu);
+//			windows.add(addNodeMenu);
+			this.createCircle(50, 50);
 //			Circle newCircle;
 		}
 		catch (Exception e)
@@ -82,37 +81,10 @@ public class Controller
 		backgroundPane.getChildren().add(circle);
 		newCircle = circle;
 	}
-
-    /*
-    // occurs at the start of the drag (when the mouse is pressed)
-    public void mouseClicked(MouseEvent mouseEvent) throws IOException {
-
-        xPressed = mouseEvent.getSceneX();
-        yPressed = mouseEvent.getSceneY();
-        if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && !addNodeMenuExists) {
-            if (mouseEvent.getSource().equals(MotherPane) && !mouseEvent.getSource().equals(miniMenu)) {
-                closeAll();
-            }
-            //else if (mouseEvent.getSource().equals(A CIRCLE THAT EXISTS IN THE MAP)) , DO SOMETHING ELSE
-        }
-        else if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
-            if (!addNodeMenuExists) {
-                addNodeMenuAppear(xPressed,yPressed);
-            } else {
-                addNodeMenu.setLayoutX(xPressed);
-                addNodeMenu.setLayoutY(yPressed);
-            }
-        }
-    }
-    */
+	
 	
 	public void addNodeMenuAppear(double xCoord, double yCoord) throws IOException
 	{
-		
-		AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
-		System.out.println("initialized addNode: " + newAddNodeMenu);
-		this.addNodeMenu = newAddNodeMenu;
-		
 		//Should only run the first time
 		if (!backgroundPane.getChildren().contains(addNodeMenu))
 			backgroundPane.getChildren().add(addNodeMenu);
@@ -129,29 +101,18 @@ public class Controller
 		System.out.println("mini menu");
 		try
 		{
-			if (!miniMenuExists)
-			{
-				AnchorPane miniMenuNew = FXMLLoader.load(getClass().getResource("miniMenu.fxml"));
-				miniMenuNew.setLayoutX(xPressed);
-				miniMenuNew.setLayoutY(yPressed);
-				
-				miniMenu = miniMenuNew;
-				MotherPane.getChildren().add(miniMenu);
-				
-				
-				miniMenuExists = true;
-			}
-			else
-			{
-				miniMenu.setLayoutX(x);
-				miniMenu.setLayoutY(y);
-			}
+			if (!backgroundPane.getChildren().contains(miniMenu))
+				backgroundPane.getChildren().add(miniMenu);
+			
+			miniMenu.setLayoutX(x);
+			miniMenu.setLayoutY(y);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			System.out.println("IO Exception, man");
 			e.printStackTrace();
 		}
+		
 	}
 	
 	void closeAll()
@@ -166,7 +127,6 @@ public class Controller
 		miniMenuExists = false;
 		addNodeMenuExists = false;
 	}
-	
 	
 	
 	public void editAttributes(MouseEvent mouseEvent)
@@ -248,13 +208,14 @@ public class Controller
 		}
 	};
 	
-EventHandler<MouseEvent> circleOnMouseDragRelease = new EventHandler<MouseEvent>() {
-	@Override
-	public void handle(MouseEvent event)
+	EventHandler<MouseEvent> circleOnMouseDragRelease = new EventHandler<MouseEvent>()
 	{
-		System.out.println("DRAG RELEASED");
-	}
-};
+		@Override
+		public void handle(MouseEvent event)
+		{
+			System.out.println("DRAG RELEASED");
+		}
+	};
 	
 	public void backgroundClick(MouseEvent mouseEvent)
 	{
@@ -268,7 +229,6 @@ EventHandler<MouseEvent> circleOnMouseDragRelease = new EventHandler<MouseEvent>
 			}
 			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
 				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY());
-			
 		}
 		catch (IOException e)
 		{
