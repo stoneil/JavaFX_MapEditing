@@ -43,6 +43,7 @@ public class Controller
 	
 	
 	Set<AnchorPane> windows = new HashSet<AnchorPane>();
+	Circle newCircle;
 	
 	@FXML
 	public void initialize()
@@ -52,6 +53,7 @@ public class Controller
 			windows.add(miniMenu);
 			windows.add(addNodeMenu);
 //		    this.createCircle(50, 50);
+			Circle newCircle;
 		}
 		catch (Exception e)
 		{
@@ -75,8 +77,9 @@ public class Controller
 		circle.setOnMousePressed(circleOnMousePress);
 		circle.setOnMouseDragged(circleOnMouseDrag);
 		circle.setOnMouseClicked(circleOnMouseRightClick);
-		System.out.println("parentPane: " + MotherPane);
-		backgroundPane.getChildren().add(circle);
+		System.out.println("parentPane: " + backgroundPane);
+//		backgroundPane.getChildren().add(circle);
+		newCircle = circle;
 	}
 
     /*
@@ -162,6 +165,8 @@ public class Controller
 		miniMenuExists = false;
 		addNodeMenuExists = false;
 	}
+	
+	
 	
 	public void editAttributes(MouseEvent mouseEvent)
 	{
@@ -270,6 +275,7 @@ public class Controller
 			if (mouseEvent.getButton().equals(MouseButton.PRIMARY))
 			{
 				closeAll();
+				backgroundPane.getChildren().remove(addNodeMenu);
 			}
 			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
 				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY());
