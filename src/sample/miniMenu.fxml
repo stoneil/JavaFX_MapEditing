@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,40 +7,41 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="sample.Controller" fx:id="miniMenu" minHeight="-Infinity" minWidth="-Infinity" opacity="0.89" prefHeight="77.0" prefWidth="129.0" style="-fx-background-color: #0067b1 #0067b1; -fx-background-radius: 10px;">
+<AnchorPane fx:id="miniMenu" minHeight="-Infinity" minWidth="-Infinity" opacity="0.89" prefHeight="97.0" prefWidth="132.0" style="-fx-background-color: #0067b1 #0067b1; -fx-background-radius: 10px;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
-        <Label fx:id="editAttributes" accessibleRole="BUTTON" layoutX="4.0" layoutY="2.0"
-               onMouseClicked="#editAttributes" prefHeight="27.0" prefWidth="124.0" text="Edit Attributes"
-               textFill="WHITE">
+        <Label fx:id="editAttributes" accessibleRole="BUTTON" layoutX="4.0" layoutY="2.0" onMouseClicked="#editAttributes" prefHeight="27.0" prefWidth="124.0" text="Edit Attributes" textFill="WHITE">
             <font>
-                <Font name="Apple SD Gothic Neo Regular" size="18.0"/>
+                <Font name="Apple SD Gothic Neo Regular" size="18.0" />
             </font>
         </Label>
-        <Polygon fill="DODGERBLUE" layoutX="126.0" layoutY="10.0" scaleX="0.3" scaleY="0.1" stroke="TRANSPARENT"
-                 strokeType="INSIDE" style="-fx-fill: #0067b1 #0067b1;" translateX="-100.0">
+        <Polygon fill="DODGERBLUE" layoutX="126.0" layoutY="10.0" scaleX="0.3" scaleY="0.1" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-fill: #0067b1 #0067b1;" translateX="-100.0">
             <points>
-                <Double fx:value="-50.0"/>
-                <Double fx:value="40.0"/>
-                <Double fx:value="50.0"/>
-                <Double fx:value="40.0"/>
-                <Double fx:value="0.0"/>
-                <Double fx:value="-60.0"/>
+                <Double fx:value="-50.0" />
+                <Double fx:value="40.0" />
+                <Double fx:value="50.0" />
+                <Double fx:value="40.0" />
+                <Double fx:value="0.0" />
+                <Double fx:value="-60.0" />
             </points>
         </Polygon>
-        <Line endX="100.0" layoutX="105.0" layoutY="26.0" startX="-100.0" stroke="#ffffff73"/>
-        <Label fx:id="addEdge" layoutX="4.0" layoutY="26.0" onMouseClicked="#addEdge" prefHeight="27.0"
-               prefWidth="107.0" text="Add Edge" textFill="WHITE">
+        <Line endX="100.0" layoutX="105.0" layoutY="26.0" startX="-100.0" stroke="#ffffff73" />
+        <Label fx:id="addEdge" layoutX="4.0" layoutY="26.0" onMouseClicked="#addEdge" prefHeight="27.0" prefWidth="107.0" text="Add Edge" textFill="WHITE">
             <font>
-                <Font name="Apple SD Gothic Neo Regular" size="18.0"/>
+                <Font name="Apple SD Gothic Neo Regular" size="18.0" />
             </font>
         </Label>
-        <Line endX="100.0" layoutX="105.0" layoutY="50.0" startX="-100.0" stroke="#ffffff73"/>
-        <Label fx:id="deleteNode" layoutX="2.0" layoutY="49.0" onMouseClicked="#deleteNode" prefHeight="27.0"
-               prefWidth="107.0" text="Delete Node" textFill="WHITE">
+        <Line endX="100.0" layoutX="105.0" layoutY="50.0" startX="-100.0" stroke="#ffffff73" />
+        <Label fx:id="deleteNode" layoutX="2.0" layoutY="49.0" onMouseClicked="#deleteNode" prefHeight="27.0" prefWidth="107.0" text="Delete Node" textFill="WHITE">
             <font>
-                <Font name="Apple SD Gothic Neo Regular" size="18.0"/>
+                <Font name="Apple SD Gothic Neo Regular" size="18.0" />
             </font>
         </Label>
+      <Line endX="100.0" layoutX="105.0" layoutY="73.0" startX="-100.0" stroke="#ffffff73" />
+      <Label fx:id="addEdge" layoutX="3.0" layoutY="71.0" onMouseClicked="#addEdge" prefHeight="27.0" prefWidth="107.0" text="Set as Kiosk" textFill="WHITE">
+         <font>
+            <Font name="Apple SD Gothic Neo Regular" size="18.0" />
+         </font>
+      </Label>
     </children>
 
 </AnchorPane>

@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseButton;
@@ -46,6 +47,8 @@ public class Controller {
 		    windows.add(miniMenu);
 		    windows.add(addNodeMenu);
 		    this.createCircle(50, 50);
+		    
+		    MotherPane.setOnMouseClicked(backgroundClick);
 	    }
 	    catch (IOException e)
 	    {
@@ -62,11 +65,12 @@ public class Controller {
         circle.setCenterX(x);
         circle.setCenterY(y);
         circle.setRadius(5.0);
-        circle.setStyle("-fx-fill: hotpink");
+        circle.setStyle("-fx-fill: blue");
         
         //MouseEvent Handler calls
         circle.setOnMousePressed(circleOnMousePress);
 		circle.setOnMouseDragged(circleOnMouseDrag);
+		circle.setOnMouseClicked(circleOnMouseRightClick);
 
         MotherPane.getChildren().add(circle);
     }
@@ -113,27 +117,27 @@ public class Controller {
     	addNodeMenuExists = true;
     }
     
-    public void miniMenuAppear() {
+    public void miniMenuAppear(double x, double y) {
      
     	try
 	    {
-		    AnchorPane miniMenuNew = FXMLLoader.load(getClass().getResource("miniMenu.fxml"));
-		    miniMenuNew.setLayoutX(xPressed);
-		    miniMenuNew.setLayoutY(yPressed);
-		
-		    miniMenu = miniMenuNew;
-		    MotherPane.getChildren().add(miniMenu);
-		
-		    miniMenu.setOnMousePressed(new EventHandler<MouseEvent>()
+	    	if (!miniMenuExists)
 		    {
-			    @Override
-			    public void handle(MouseEvent event)
-			    {
-				    System.out.println("got here");
-			    }
-		    });
-		
-		    miniMenuExists = true;
+			    AnchorPane miniMenuNew = FXMLLoader.load(getClass().getResource("miniMenu.fxml"));
+			    miniMenuNew.setLayoutX(xPressed);
+			    miniMenuNew.setLayoutY(yPressed);
+			
+			    miniMenu = miniMenuNew;
+			    MotherPane.getChildren().add(miniMenu);
+			
+			
+			    miniMenuExists = true;
+		    }
+		    else
+		    {
+		    	miniMenu.setLayoutX(x);
+		    	miniMenu.setLayoutY(y);
+		    }
 	    }
 	    catch (IOException e)
 	    {
@@ -208,6 +212,33 @@ public class Controller {
 //			clickedCircle.setLayoutX(yCircleStart + 50);
 //			clickedCircle.setTranslateY(event.getSceneY() + yPressed);
 
+		}
+	};
+	
+	EventHandler<MouseEvent> circleOnMouseRightClick = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event)
+		{
+			if (event.getButton().equals(MouseButton.SECONDARY))
+				miniMenuAppear(event.getSceneX(),event.getSceneY());
+		}
+	};
+	
+	EventHandler<MouseEvent> backgroundClick = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event)
+		{
+			try
+			{
+				if (event.isPrimaryButtonDown())
+					closeAll();
+				else if (event.isSecondaryButtonDown())
+					addNodeMenuAppear(event.getSceneX(), event.getSceneY());
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	};
 	
