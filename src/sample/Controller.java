@@ -4,6 +4,8 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -16,64 +18,66 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class Controller {
+public class Controller
+{
 	
-	public AnchorPane miniMenu;
 	@FXML
-    public AnchorPane MotherPane;
-    @FXML
-    public AnchorPane addNodeMenu;
-    
-
-    boolean miniMenuExists = false;
-    boolean addNodeMenuExists = false;
-    
-    double xPressed;
-    double yPressed;
-    
-//    Circle clickedCircle;
+	public AnchorPane miniMenu,backgroundPane,MotherPane,addNodeMenu;
+	@FXML
+	public Label editAttributes, addEdge, deleteNode, setAsKiosk, addNode;
+	public AnchorPane addNodeMenuDiff;
+	public AnchorPane miniMenuDiff;
+	
+	
+	boolean miniMenuExists = false;
+	boolean addNodeMenuExists = false;
+	
+	double xPressed;
+	double yPressed;
+	
+	//    Circle clickedCircle;
 //    double xCircleStart;
 //    double yCircleStart;
 	double orgSceneX, orgSceneY;
 	double orgTranslateX, orgTranslateY;
-
-    
-    Set<AnchorPane> windows = new HashSet<AnchorPane>();
-
-    @FXML
-    public void initialize(){
-    	try
-	    {
-		    windows.add(miniMenu);
-		    windows.add(addNodeMenu);
-		    this.createCircle(50, 50);
-		    
-		    MotherPane.setOnMouseClicked(backgroundClick);
-	    }
-	    catch (IOException e)
-	    {
-	    	e.printStackTrace();
-	    }
-    }
-
-    public void  createCircle(double x, double y) throws IOException{
-
-        Circle circle = new Circle();
-
-        String randID = Double.toString(Math.random()).substring(0, 10);
-        circle.setId(randID);
-        circle.setCenterX(x);
-        circle.setCenterY(y);
-        circle.setRadius(5.0);
-        circle.setStyle("-fx-fill: blue");
-        
-        //MouseEvent Handler calls
-        circle.setOnMousePressed(circleOnMousePress);
+	
+	
+	Set<AnchorPane> windows = new HashSet<AnchorPane>();
+	
+	@FXML
+	public void initialize()
+	{
+		try
+		{
+			windows.add(miniMenu);
+			windows.add(addNodeMenu);
+//		    this.createCircle(50, 50);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void createCircle(double x, double y) throws IOException
+	{
+		
+		Circle circle = new Circle();
+		
+		String randID = Double.toString(Math.random()).substring(0, 10);
+		circle.setId(randID);
+		circle.setCenterX(x);
+		circle.setCenterY(y);
+		circle.setRadius(5.0);
+		circle.setStyle("-fx-fill: blue");
+		
+		//MouseEvent Handler calls
+		circle.setOnMousePressed(circleOnMousePress);
 		circle.setOnMouseDragged(circleOnMouseDrag);
 		circle.setOnMouseClicked(circleOnMouseRightClick);
-
-        MotherPane.getChildren().add(circle);
-    }
+		System.out.println("parentPane: " + MotherPane);
+		backgroundPane.getChildren().add(circle);
+	}
 
     /*
     // occurs at the start of the drag (when the mouse is pressed)
@@ -97,84 +101,93 @@ public class Controller {
         }
     }
     */
-    
-    public void addNodeMenuAppear(double xCoord,double yCoord) throws IOException{
-    	AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
-    	newAddNodeMenu.setLayoutX(xCoord);
-    	newAddNodeMenu.setLayoutY(yCoord);
-    	addNodeMenu = newAddNodeMenu;
-    	MotherPane.getChildren().add(addNodeMenu);
-    	
-    	addNodeMenu.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent event)
-		    {
-		    	System.out.println("Want to add a node?");
-		    }
-	    });
-    	
-    	
-    	addNodeMenuExists = true;
-    }
-    
-    public void miniMenuAppear(double x, double y) {
-     
-    	try
-	    {
-	    	if (!miniMenuExists)
-		    {
-			    AnchorPane miniMenuNew = FXMLLoader.load(getClass().getResource("miniMenu.fxml"));
-			    miniMenuNew.setLayoutX(xPressed);
-			    miniMenuNew.setLayoutY(yPressed);
-			
-			    miniMenu = miniMenuNew;
-			    MotherPane.getChildren().add(miniMenu);
-			
-			
-			    miniMenuExists = true;
-		    }
-		    else
-		    {
-		    	miniMenu.setLayoutX(x);
-		    	miniMenu.setLayoutY(y);
-		    }
-	    }
-	    catch (IOException e)
-	    {
-	    	System.out.println("IO Exception, man");
-	    }
-    }
-
-    void closeAll() {
+	
+	public void addNodeMenuAppear(double xCoord, double yCoord) throws IOException
+	{
+		
+		AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
+		System.out.println("initialized addNode: " + newAddNodeMenu);
+		this.addNodeMenu = newAddNodeMenu;
+		
+		//Should only run the first time
+		if (!backgroundPane.getChildren().contains(addNodeMenu))
+			backgroundPane.getChildren().add(addNodeMenu);
+		
+		//AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
+		addNodeMenu.setLayoutX(xCoord);
+		addNodeMenu.setLayoutY(yCoord);
+		//addNodeMenu = newAddNodeMenu;
+		//MotherPane.getChildren().add(addNodeMenu);
+	}
+	
+	public void miniMenuAppear(double x, double y)
+	{
+		System.out.println("mini menu");
+		try
+		{
+			if (!miniMenuExists)
+			{
+				AnchorPane miniMenuNew = FXMLLoader.load(getClass().getResource("miniMenu.fxml"));
+				miniMenuNew.setLayoutX(xPressed);
+				miniMenuNew.setLayoutY(yPressed);
+				
+				miniMenu = miniMenuNew;
+				MotherPane.getChildren().add(miniMenu);
+				
+				
+				miniMenuExists = true;
+			}
+			else
+			{
+				miniMenu.setLayoutX(x);
+				miniMenu.setLayoutY(y);
+			}
+		}
+		catch (IOException e)
+		{
+			System.out.println("IO Exception, man");
+			e.printStackTrace();
+		}
+	}
+	
+	void closeAll()
+	{
         /*MotherPane.getChildren().remove(miniMenu);
         miniMenuExists = false;
         MotherPane.getChildren().remove(addNodeMenu);
         addNodeMenuExists = false;
         */
-        MotherPane.getChildren().removeAll(windows);
-    }
-
-    public void editAttributes(MouseEvent mouseEvent) {
-        System.out.println("edit Attributes clicked");
-    }
-
-
-    public void addEdge(MouseEvent mouseEvent) {
-        System.out.println("add edge clicked");
-    }
-
-    public void deleteNode(MouseEvent mouseEvent) {
-        System.out.println("deleteNode clicked");
-    }
+		System.out.println("closing all windows");
+		MotherPane.getChildren().removeAll(windows);
+		miniMenuExists = false;
+		addNodeMenuExists = false;
+	}
+	
+	public void editAttributes(MouseEvent mouseEvent)
+	{
+		System.out.println("edit Attributes clicked");
+	}
+	
+	
+	public void addEdge(MouseEvent mouseEvent)
+	{
+		System.out.println("add edge clicked");
+	}
+	
+	public void deleteNode(MouseEvent mouseEvent)
+	{
+		System.out.println("deleteNode clicked");
+	}
 	
 	public void addNodeClicked(MouseEvent mouseEvent) throws IOException
 	{
-		createCircle(mouseEvent.getSceneX(),mouseEvent.getSceneY());
+		createCircle(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 	}
 	
 	//Circle Event Handlers
 	
-	EventHandler<MouseEvent> circleOnMousePress = new EventHandler<MouseEvent>() {
+	EventHandler<MouseEvent> circleOnMousePress = new EventHandler<MouseEvent>()
+	{
 		@Override
 		public void handle(MouseEvent event)
 		{
@@ -185,13 +198,14 @@ public class Controller {
 //			yCircleStart = clickedCircle.getCenterY();
 			orgSceneX = event.getSceneX();
 			orgSceneY = event.getSceneY();
-			orgTranslateX = ((Circle)(event.getSource())).getTranslateX();
-			orgTranslateY = ((Circle)(event.getSource())).getTranslateY();
+			orgTranslateX = ((Circle) (event.getSource())).getTranslateX();
+			orgTranslateY = ((Circle) (event.getSource())).getTranslateY();
 		}
 	};
 	
 	
-	EventHandler<MouseEvent> circleOnMouseDrag = new EventHandler<MouseEvent>() {
+	EventHandler<MouseEvent> circleOnMouseDrag = new EventHandler<MouseEvent>()
+	{
 		@Override
 		public void handle(MouseEvent event)
 		{
@@ -200,9 +214,9 @@ public class Controller {
 			double newTranslateX = orgTranslateX + offsetX;
 			double newTranslateY = orgTranslateY + offsetY;
 			
-			((Circle)(event.getSource())).setTranslateX(newTranslateX);
-			((Circle)(event.getSource())).setTranslateY(newTranslateY);
-			
+			((Circle) (event.getSource())).setTranslateX(newTranslateX);
+			((Circle) (event.getSource())).setTranslateY(newTranslateY);
+
 //			double xDragged = event.getSceneX() - xPressed;
 //			double yDragged = event.getSceneY() - yPressed;
 //
@@ -211,28 +225,34 @@ public class Controller {
 //
 //			clickedCircle.setLayoutX(yCircleStart + 50);
 //			clickedCircle.setTranslateY(event.getSceneY() + yPressed);
-
+		
 		}
 	};
 	
-	EventHandler<MouseEvent> circleOnMouseRightClick = new EventHandler<MouseEvent>() {
+	EventHandler<MouseEvent> circleOnMouseRightClick = new EventHandler<MouseEvent>()
+	{
 		@Override
 		public void handle(MouseEvent event)
 		{
 			if (event.getButton().equals(MouseButton.SECONDARY))
-				miniMenuAppear(event.getSceneX(),event.getSceneY());
+			{
+				System.out.println("right click");
+				miniMenuAppear(event.getSceneX(), event.getSceneY());
+			}
 		}
 	};
 	
-	EventHandler<MouseEvent> backgroundClick = new EventHandler<MouseEvent>() {
+	EventHandler<MouseEvent> backgroundClickNot = new EventHandler<MouseEvent>()
+	{
 		@Override
 		public void handle(MouseEvent event)
 		{
+			System.out.println("background click");
 			try
 			{
-				if (event.isPrimaryButtonDown())
+				if (event.getButton().equals(MouseButton.PRIMARY))
 					closeAll();
-				else if (event.isSecondaryButtonDown())
+				else if (event.getButton().equals(MouseButton.SECONDARY))
 					addNodeMenuAppear(event.getSceneX(), event.getSceneY());
 			}
 			catch (IOException e)
@@ -242,4 +262,23 @@ public class Controller {
 		}
 	};
 	
+	public void backgroundClick(MouseEvent mouseEvent)
+	{
+		System.out.println("background click");
+		try
+		{
+			if (mouseEvent.getButton().equals(MouseButton.PRIMARY))
+			{
+				closeAll();
+			}
+			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
+				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+			
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }
+
