@@ -52,8 +52,8 @@ public class Controller
 		{
 			windows.add(miniMenu);
 			windows.add(addNodeMenu);
-//		    this.createCircle(50, 50);
-			Circle newCircle;
+		    this.createCircle(50, 50);
+//			Circle newCircle;
 		}
 		catch (Exception e)
 		{
@@ -77,8 +77,9 @@ public class Controller
 		circle.setOnMousePressed(circleOnMousePress);
 		circle.setOnMouseDragged(circleOnMouseDrag);
 		circle.setOnMouseClicked(circleOnMouseRightClick);
+		circle.setOnMouseDragReleased(circleOnMouseDragRelease);
 		System.out.println("parentPane: " + backgroundPane);
-//		backgroundPane.getChildren().add(circle);
+		backgroundPane.getChildren().add(circle);
 		newCircle = circle;
 	}
 
@@ -247,25 +248,13 @@ public class Controller
 		}
 	};
 	
-	EventHandler<MouseEvent> backgroundClickNot = new EventHandler<MouseEvent>()
+EventHandler<MouseEvent> circleOnMouseDragRelease = new EventHandler<MouseEvent>() {
+	@Override
+	public void handle(MouseEvent event)
 	{
-		@Override
-		public void handle(MouseEvent event)
-		{
-			System.out.println("background click");
-			try
-			{
-				if (event.getButton().equals(MouseButton.PRIMARY))
-					closeAll();
-				else if (event.getButton().equals(MouseButton.SECONDARY))
-					addNodeMenuAppear(event.getSceneX(), event.getSceneY());
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	};
+		System.out.println("DRAG RELEASED");
+	}
+};
 	
 	public void backgroundClick(MouseEvent mouseEvent)
 	{
