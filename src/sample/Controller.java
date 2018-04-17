@@ -42,7 +42,7 @@ public class Controller
 	
 	
 	Set<AnchorPane> windows = new HashSet<AnchorPane>();
-	Circle editingCircle;
+	Circle currentCircle;
 	
 	@FXML
 	public void initialize()
@@ -51,7 +51,7 @@ public class Controller
 		{
 //			windows.add(miniMenu);
 //			windows.add(addNodeMenu);
-			this.createCircle(50, 50);
+//			this.createCircle(50, 50);
 //			Circle newCircle;
 //			backgroundPane.addEventFilter(MouseEvent.MOUSE_CLICKED, backgroundFilter);
 		}
@@ -78,8 +78,18 @@ public class Controller
 		circle.setOnMouseDragged(circleOnMouseDrag);
 		circle.setOnMouseClicked(circleOnMouseLeftClick);
 		circle.setOnMouseDragReleased(circleOnMouseDragRelease);
+		circle.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, new EventHandler<MouseDragEvent>() {
+			@Override
+			public void handle(MouseDragEvent event)
+			{
+				System.out.println("drag released");
+				closeAll();
+				event.consume();
+			}
+		});
 		System.out.println("parentPane: " + backgroundPane);
 		backgroundPane.getChildren().add(circle);
+		currentCircle = circle;
 	}
 	
 	
@@ -157,7 +167,7 @@ public class Controller
 	public void deleteNode(MouseEvent mouseEvent)
 	{
 		System.out.println("deleteNode clicked");
-		backgroundPane.getChildren().remove(((Circle) (mouseEvent.getSource())));
+		backgroundPane.getChildren().remove(currentCircle);
 	}
 	
 	public void addNodeClicked(MouseEvent mouseEvent) throws IOException
@@ -201,6 +211,7 @@ public class Controller
 			
 			((Circle) (event.getSource())).setTranslateX(newTranslateX);
 			((Circle) (event.getSource())).setTranslateY(newTranslateY);
+			event.consume();
 		}
 	};
 	
