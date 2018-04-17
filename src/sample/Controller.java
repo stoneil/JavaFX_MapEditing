@@ -42,6 +42,8 @@ public class Controller
 	
 	
 	Set<AnchorPane> windows = new HashSet<AnchorPane>();
+	
+	double addNodeCoordX,addNodeCoordY;
 	Circle currentCircle;
 	
 	@FXML
@@ -77,7 +79,7 @@ public class Controller
 		circle.setOnMousePressed(circleOnMousePress);
 		circle.setOnMouseDragged(circleOnMouseDrag);
 		circle.setOnMouseClicked(circleOnMouseLeftClick);
-		circle.setOnMouseDragReleased(circleOnMouseDragRelease);
+		circle.setOnMouseEntered(circleOnMouseHover);
 		circle.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, new EventHandler<MouseDragEvent>() {
 			@Override
 			public void handle(MouseDragEvent event)
@@ -89,12 +91,13 @@ public class Controller
 		});
 		System.out.println("parentPane: " + backgroundPane);
 		backgroundPane.getChildren().add(circle);
-		currentCircle = circle;
 	}
 	
 	
-	public void addNodeMenuAppear(double xCoord, double yCoord) throws IOException
+	public void addNodeMenuAppear(MouseEvent event) throws IOException
 	{
+		addNodeCoordX = event.getSceneX();
+		addNodeCoordY = event.getSceneY();
 		//Should only run the first time
 		if (backgroundPane.getChildren().contains(miniMenu))
 		{
@@ -104,16 +107,18 @@ public class Controller
 		if (!backgroundPane.getChildren().contains(addNodeMenu))
 			backgroundPane.getChildren().add(addNodeMenu);
 		
-		//AnchorPane newAddNodeMenu = FXMLLoader.load(getClass().getResource("addNodeMenu.fxml"));
-		addNodeMenu.setLayoutX(xCoord);
-		addNodeMenu.setLayoutY(yCoord);
+		
+		addNodeMenu.setLayoutX(addNodeCoordX - 26);
+		addNodeMenu.setLayoutY(addNodeCoordY + 12);
 		//addNodeMenu = newAddNodeMenu;
 		//MotherPane.getChildren().add(addNodeMenu);
 	}
 	
-	public void miniMenuAppear(double x, double y)
+	public void miniMenuAppear(MouseEvent event)
 	{
 		System.out.println("mini menu");
+		double xCoord = ((Circle)event.getSource()).getCenterX();
+		double yCoord = ((Circle)event.getSource()).getCenterY();
 		try
 		{
 			if (backgroundPane.getChildren().contains(addNodeMenu))
@@ -124,8 +129,11 @@ public class Controller
 			if (!backgroundPane.getChildren().contains(miniMenu))
 				backgroundPane.getChildren().add(miniMenu);
 			
-			miniMenu.setLayoutX(x);
-			miniMenu.setLayoutY(y);
+			double layoutToTriangleX = xCoord - 26;
+			double layoutToTriangleY = yCoord + 12;
+			
+			miniMenu.setLayoutX(layoutToTriangleX);
+			miniMenu.setLayoutY(layoutToTriangleY);
 			miniMenu.toFront();
 		}
 		catch (Exception e)
@@ -166,13 +174,13 @@ public class Controller
 	
 	public void deleteNode(MouseEvent mouseEvent)
 	{
-		System.out.println("deleteNode clicked");
+		System.out.println("deleteNode clicked: " + mouseEvent.getSource());
 		backgroundPane.getChildren().remove(currentCircle);
 	}
 	
 	public void addNodeClicked(MouseEvent mouseEvent) throws IOException
 	{
-		createCircle(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+		createCircle(addNodeCoordX,addNodeCoordY);
 	}
 	
 	public void setKioskTrigger(MouseEvent mouseEvent)
@@ -223,18 +231,20 @@ public class Controller
 			if (event.getButton().equals(MouseButton.PRIMARY))
 			{
 				System.out.println("left click");
-				miniMenuAppear(event.getSceneX(), event.getSceneY());
+				miniMenuAppear(event);
+				currentCircle = (Circle)event.getSource();
 				event.consume();
 			}
 		}
 	};
 	
-	EventHandler<MouseEvent> circleOnMouseDragRelease = new EventHandler<MouseEvent>()
-	{
+
+	
+	EventHandler<MouseEvent> circleOnMouseHover = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event)
 		{
-			System.out.println("DRAG RELEASED");
+			System.out.println("hovered over");
 		}
 	};
 	
@@ -248,13 +258,15 @@ public class Controller
 				closeAll();
 			}
 			else if (mouseEvent.getButton().equals(MouseButton.SECONDARY))
-				addNodeMenuAppear(mouseEvent.getSceneX(), mouseEvent.getSceneY()); //TODO: make sure that this stops happening when you right click on a circle
+				addNodeMenuAppear(mouseEvent); //TODO: make sure that this stops happening when you right click on a circle
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 
 }

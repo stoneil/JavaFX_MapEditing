@@ -35,7 +35,7 @@
                   <Font name="Apple SD Gothic Neo Regular" size="18.0" />
                </font>
             </Label>
-            <Polygon fill="DODGERBLUE" layoutX="126.0" layoutY="10.0" scaleX="0.3" scaleY="0.1" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-fill: #0067b1 #0067b1;" translateX="-100.0">
+            <Polygon fill="DODGERBLUE" layoutX="25.0" layoutY="10.0" scaleX="0.3" scaleY="0.1" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-fill: #0067b1 #0067b1;">
                <points>
                   <Double fx:value="-50.0" />
                   <Double fx:value="40.0" />
